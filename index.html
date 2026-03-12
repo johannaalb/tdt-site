@@ -166,6 +166,12 @@ data.forEach(row => {
 
 let tr=document.createElement("tr")
 
+tr.style.cursor="pointer"
+
+tr.onclick = () => {
+window.location.href = "study.html?sujet=" + encodeURIComponent(row.sujet)
+}
+
 tr.innerHTML=`
 <td>${row.enjeu}</td>
 <td>${row.sujet}</td>
