@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Détail de l'étude</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f8;
+margin:0;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+padding:40px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#0b3d5c;
+}
+
+a{
+color:#0b3d5c;
+font-weight:bold;
+}
+
+button{
+margin-top:20px;
+padding:10px 20px;
+background:#0b3d5c;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1 id="title"></h1>
+
+<p><b>Enjeu :</b> <span id="enjeu"></span></p>
+<p><b>Indicateur :</b> <span id="indicateur"></span></p>
+<p><b>Satellite :</b> <span id="satellite"></span></p>
+<p><b>Méthode :</b> <span id="methode"></span></p>
+
+<p>
+<a id="carte" target="_blank">Voir la carte</a>
+</p>
+
+<p>
+<a id="article" target="_blank">Lire l'article scientifique</a>
+</p>
+
+<button onclick="history.back()">Retour</button>
+
+</div>
+
+</div>
+
+<script>
+
+const urlParams = new URLSearchParams(window.location.search)
+const sujet = urlParams.get("sujet")
+
+const sheetURL =
+"https://opensheet.elk.sh/1cGMJsh_iurq9yUesWB-LMK08bUIKcGzfa3-USXW9bqw/studies"
+
+fetch(sheetURL)
+
+.then(res => res.json())
+
+.then(data => {
+
+let study = data.find(s => s.sujet === sujet)
+
+document.getElementById("title").innerText = study.sujet
+document.getElementById("enjeu").innerText = study.enjeu
+document.getElementById("indicateur").innerText = study.indicateur
+document.getElementById("satellite").innerText = study.satellite
+document.getElementById("methode").innerText = study.methode
+
+document.getElementById("carte").href = study.carte
+document.getElementById("article").href = study.article
+
+})
+
+</script>
+
+</body>
+
+</html>
