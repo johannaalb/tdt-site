@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+
+<meta charset="UTF-8">
 
 <title>La télédétection aide à agir</title>
 
@@ -9,30 +12,70 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f5f7fa;
+background:#f4f6f8;
 }
 
 header{
 background:#0b3d5c;
 color:white;
-padding:30px;
+padding:40px;
 text-align:center;
 }
 
-table{
-width:90%;
+.container{
+max-width:1200px;
 margin:auto;
+padding:40px;
+}
+
+input{
+padding:10px;
+width:300px;
+margin-bottom:20px;
+}
+
+table{
+width:100%;
 border-collapse:collapse;
+background:white;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 th,td{
-padding:10px;
+padding:12px;
 border-bottom:1px solid #ddd;
 }
 
 th{
 background:#0b3d5c;
 color:white;
+}
+
+tr:hover{
+background:#f1f1f1;
+}
+
+a{
+color:#0b3d5c;
+font-weight:bold;
+text-decoration:none;
+}
+
+.filter-buttons{
+margin-bottom:20px;
+}
+
+.filter-buttons button{
+margin-right:10px;
+padding:8px 15px;
+border:none;
+background:#e3eef6;
+cursor:pointer;
+border-radius:5px;
+}
+
+.filter-buttons button:hover{
+background:#cfe2f3;
 }
 
 </style>
@@ -45,9 +88,28 @@ color:white;
 
 <h1>La télédétection aide à agir</h1>
 
-<p>Études scientifiques basées sur la télédétection</p>
+<p>
+Explorer comment les satellites permettent de répondre aux enjeux environnementaux
+</p>
 
 </header>
+
+<div class="container">
+
+<h2>Études scientifiques</h2>
+
+<input type="text" id="search" placeholder="Rechercher..." onkeyup="searchTable()">
+
+<div class="filter-buttons">
+
+<button onclick="filterTheme('all')">Tous</button>
+<button onclick="filterTheme('climat')">Climat</button>
+<button onclick="filterTheme('deforestation')">Déforestation</button>
+<button onclick="filterTheme('agriculture')">Agriculture</button>
+<button onclick="filterTheme('eau')">Eau</button>
+<button onclick="filterTheme('urbanisation')">Urbanisation</button>
+
+</div>
 
 <table>
 
@@ -73,10 +135,14 @@ color:white;
 
 </table>
 
+</div>
+
 <script>
 
 const sheetURL =
 "https://opensheet.elk.sh/1cGMJsh_iurq9yUesWB-LMK08bUIKcGzfa3-USXW9bqw/studies"
+
+let studies=[]
 
 fetch(sheetURL)
 
@@ -84,13 +150,23 @@ fetch(sheetURL)
 
 .then(data => {
 
-let table = document.getElementById("data-table")
+studies=data
+
+displayStudies(data)
+
+})
+
+function displayStudies(data){
+
+let table=document.getElementById("data-table")
+
+table.innerHTML=""
 
 data.forEach(row => {
 
-let tr = document.createElement("tr")
+let tr=document.createElement("tr")
 
-tr.innerHTML = `
+tr.innerHTML=`
 <td>${row.enjeu}</td>
 <td>${row.sujet}</td>
 <td>${row.indicateur}</td>
@@ -104,9 +180,42 @@ table.appendChild(tr)
 
 })
 
-})
+}
+
+function searchTable(){
+
+let value=document.getElementById("search").value.toLowerCase()
+
+let filtered=studies.filter(s =>
+
+s.sujet.toLowerCase().includes(value) ||
+s.indicateur.toLowerCase().includes(value) ||
+s.satellite.toLowerCase().includes(value)
+
+)
+
+displayStudies(filtered)
+
+}
+
+function filterTheme(theme){
+
+if(theme==="all"){
+
+displayStudies(studies)
+
+return
+
+}
+
+let filtered=studies.filter(s => s.enjeu===theme)
+
+displayStudies(filtered)
+
+}
 
 </script>
 
 </body>
+
 </html>
