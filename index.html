@@ -1,20 +1,112 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <title>La télédétection aide à agir</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f7fa;
+}
+
+header{
+background:#0b3d5c;
+color:white;
+padding:30px;
+text-align:center;
+}
+
+table{
+width:90%;
+margin:auto;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+th{
+background:#0b3d5c;
+color:white;
+}
+
+</style>
 
 </head>
 
 <body>
 
+<header>
+
 <h1>La télédétection aide à agir</h1>
 
-<p>
-Explorer comment les satellites permettent de répondre aux enjeux environnementaux
-</p>
+<p>Études scientifiques basées sur la télédétection</p>
+
+</header>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Enjeu</th>
+<th>Sujet</th>
+<th>Indicateur</th>
+<th>Satellite</th>
+<th>Méthode</th>
+<th>Carte</th>
+<th>Article</th>
+
+</tr>
+
+</thead>
+
+<tbody id="data-table">
+
+</tbody>
+
+</table>
+
+<script>
+
+const sheetURL =
+"https://opensheet.elk.sh/1cGMJsh_iurq9yUesWB-LMK08bUIKcGzfa3-USXW9bqw/studies"
+
+fetch(sheetURL)
+
+.then(res => res.json())
+
+.then(data => {
+
+let table = document.getElementById("data-table")
+
+data.forEach(row => {
+
+let tr = document.createElement("tr")
+
+tr.innerHTML = `
+<td>${row.enjeu}</td>
+<td>${row.sujet}</td>
+<td>${row.indicateur}</td>
+<td>${row.satellite}</td>
+<td>${row.methode}</td>
+<td><a href="${row.carte}" target="_blank">Carte</a></td>
+<td><a href="${row.article}" target="_blank">Article</a></td>
+`
+
+table.appendChild(tr)
+
+})
+
+})
+
+</script>
 
 </body>
-
 </html>
